@@ -14,6 +14,7 @@
             background-color: #050509;
             color: #E0E0E0;
             line-height: 1.6;
+            overflow-x: hidden;
         }
 
         /* Logo & Hero Section */
@@ -33,7 +34,20 @@
         h1 { font-family: 'Playfair Display', serif; font-size: 3rem; color: #DAA520; margin-bottom: 10px; }
         .tagline { color: #888; font-style: italic; margin-bottom: 30px; }
 
-        /* Presale / Buy Section */
+        /* Goal Section */
+        .mission-box {
+            max-width: 800px;
+            margin: 0 auto 40px auto;
+            padding: 20px;
+            background: rgba(218, 165, 32, 0.05);
+            border-radius: 10px;
+            border-left: 4px solid #DAA520;
+            text-align: left;
+        }
+        .mission-box h2 { color: #DAA520; font-size: 1.2rem; margin-bottom: 10px; text-transform: uppercase; }
+        .mission-box p { font-size: 0.95rem; color: #ccc; }
+
+        /* Buy Section */
         .buy-box {
             background: #0a0a15;
             border: 1px solid #DAA520;
@@ -50,13 +64,15 @@
             height: 20px;
             margin: 20px 0;
             overflow: hidden;
+            position: relative;
         }
 
         .progress-bar {
             background: linear-gradient(90deg, #DAA520, #FFFACD);
-            width: 5.2%; 
+            width: 0%; /* سيتم التحكم به عبر JS */
             height: 100%;
             border-radius: 10px;
+            transition: width 1.5s cubic-bezier(0.1, 0.5, 0.5, 1);
         }
 
         /* Buttons */
@@ -76,13 +92,12 @@
             gap: 8px;
         }
 
-        .btn-buy { background: #DAA520; color: #050509; border: none; width: 100%; justify-content: center; margin-bottom: 10px; font-size: 1.1rem;}
+        .btn-buy { background: #DAA520; color: #050509; border: none; width: 100%; justify-content: center; margin-bottom: 15px; font-size: 1.1rem;}
         .btn-buy:hover { background: #FFFACD; transform: scale(1.02); }
 
         .btn-outline { background: transparent; color: #DAA520; border: 1px solid rgba(218, 165, 32, 0.5); }
         .btn-outline:hover { background: rgba(218, 165, 32, 0.1); border-color: #DAA520; }
 
-        /* Contract Address Styling */
         .contract-info {
             margin-top: 25px;
             padding-top: 15px;
@@ -127,15 +142,23 @@
         <h1>LUX PROTOCOL</h1>
         <p class="tagline">The Scientific Super-Computer on Blockchain</p>
 
+        <div class="mission-box">
+            <h2>Our Objective</h2>
+            <p>هدف بروتوكول LUX هو بناء شبكة لا مركزية توفر طاقة حوسبة فائقة (Super-Computing) للأبحاث العلمية وتطوير نماذج الذكاء الاصطناعي. تعمل عملة LUX كوقود رقمي لتبادل القوة الحسابية، مما يتيح للعلماء حول العالم الوصول إلى موارد تقنية غير محدودة بأمان وشفافية.</p>
+        </div>
+
         <div class="buy-box">
-            <h3>Genesis Presale is LIVE</h3>
-            <p style="font-size: 0.9rem; color: #DAA520;">1 POL = 10,000 LUX</p>
-            <div class="progress-container">
-                <div class="progress-bar"></div>
-            </div>
-            <p style="font-size: 0.7rem; text-align: right;">5,000,000 / 95,000,000 LUX Sold</p>
+            <h3 id="status-title">Trading is LIVE</h3>
+            <p style="font-size: 0.9rem; color: #DAA520;">Market Rate: 1 POL ≈ 10,000 LUX</p>
             
-            <a href="https://www.sushi.com/polygon/swap?token0=NATIVE&token1=0x1c9689e5493e2fff3a62b72ae5abc59f233890fd" class="btn btn-buy">Buy LUX Now</a>
+            <div class="progress-container">
+                <div class="progress-bar" id="lux-progress"></div>
+            </div>
+            <p style="font-size: 0.75rem; text-align: right; color: #DAA520;">
+                <span id="sold-amount">5,000,000</span> / 100,000,000 LUX Circulating
+            </p>
+            
+            <a href="https://www.sushi.com/swap?chainId=137&tokens=NATIVE&tokens=0x1C9689E5493E2FfF3A62b72AE5abC59F233890fd" target="_blank" class="btn btn-buy">Buy LUX Now</a>
 
             <div class="btn-group">
                 <a href="https://x.com/luxprotocoll" target="_blank" class="btn btn-outline">X / Twitter</a>
@@ -156,14 +179,35 @@
             </div>
             <div class="stat-item">
                 <span class="stat-label">Scientific Nodes</span>
-                <span class="stat-value">0 (Beta)</span>
+                <span class="stat-value">Active (Beta)</span>
             </div>
             <div class="stat-item">
-                <span class="stat-label">Data Processed</span>
-                <span class="stat-value">0.00 TB</span>
+                <span class="stat-label">Data Capacity</span>
+                <span class="stat-value">Peta-Scale</span>
             </div>
         </div>
     </section>
+
+    <script>
+        // كود التحكم في العداد التفاعلي
+        function updateProgress(currentSold) {
+            const totalSupply = 100000000;
+            const percentage = (currentSold / totalSupply) * 100;
+            
+            // تحريك الشريط
+            document.getElementById('lux-progress').style.width = percentage + "%";
+            
+            // تحديث الرقم المكتوب
+            document.getElementById('sold-amount').innerText = currentSold.toLocaleString();
+        }
+
+        // يمكنك تغيير هذا الرقم (5000000) لأي رقم تريد وسوف يتحرك الشريط تلقائياً
+        window.onload = function() {
+            setTimeout(() => {
+                updateProgress(5000000); 
+            }, 500);
+        };
+    </script>
 
 </body>
 </html>
