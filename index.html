@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LUX Protocol | The Light of Science</title>
     
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Playfair+Display:wght@700&family=Roboto+Mono:wght@400&display=swap" rel="stylesheet">
 
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -14,74 +14,133 @@
             background-color: #050509;
             color: #E0E0E0;
             line-height: 1.6;
-            overflow-x: hidden;
         }
 
-        .logo-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 50px 0;
-            background: radial-gradient(circle, #10101a 0%, #050509 70%);
+        /* Logo & Hero Section */
+        .hero {
+            text-align: center;
+            padding: 60px 20px;
+            background: radial-gradient(circle at center, #1a1a2e 0%, #050509 100%);
         }
 
         .lux-official-logo {
-            width: 280px; 
-            height: auto;
-            image-rendering: -webkit-optimize-contrast;
-            filter: drop-shadow(0px 4px 15px rgba(218, 165, 32, 0.4));
-            animation: logoFadeIn 1.5s ease-out;
+            width: 250px; 
+            filter: drop-shadow(0px 0px 20px rgba(218, 165, 32, 0.5));
+            margin-bottom: 30px;
+            animation: pulse 3s infinite ease-in-out;
         }
 
-        header { text-align: center; border-bottom: 1px solid #1a1a2e; }
-        main { max-width: 800px; margin: 0 auto; padding: 40px 20px; text-align: center; }
-        h1 { font-family: 'Playfair Display', serif; font-size: 2.5rem; color: #DAA520; margin-bottom: 20px; }
-        .manifesto { font-size: 1.1rem; color: #A0A0A0; margin-bottom: 40px; border-left: 3px solid #DAA520; padding-left: 15px; display: inline-block; }
-        .posc-section { background-color: #0a0a12; padding: 30px; border-radius: 8px; border: 1px solid #1a1a2e; margin-bottom: 40px; }
-        .posc-section h2 { color: #DAA520; margin-bottom: 15px; }
+        h1 { font-family: 'Playfair Display', serif; font-size: 3rem; color: #DAA520; margin-bottom: 10px; }
+        .tagline { color: #888; font-style: italic; margin-bottom: 30px; }
+
+        /* Presale / Buy Section */
+        .buy-box {
+            background: #0a0a15;
+            border: 1px solid #DAA520;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 500px;
+            margin: 0 auto 50px auto;
+            box-shadow: 0 0 30px rgba(218, 165, 32, 0.1);
+        }
+
+        .progress-container {
+            background: #1a1a2e;
+            border-radius: 10px;
+            height: 20px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, #DAA520, #FFFACD);
+            width: 5%; /* Initial Progress */
+            height: 100%;
+            border-radius: 10px;
+        }
+
+        /* Buttons */
+        .btn-group { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; }
         
-        .btn-join {
-            display: inline-block;
-            padding: 12px 30px;
-            background-color: transparent;
-            color: #DAA520;
-            border: 2px solid #DAA520;
+        .btn {
+            padding: 15px 35px;
             text-decoration: none;
             font-weight: bold;
-            border-radius: 4px;
-            transition: all 0.3s ease;
+            text-transform: uppercase;
+            border-radius: 5px;
+            transition: 0.3s;
+            cursor: pointer;
         }
-        .btn-join:hover { background-color: #DAA520; color: #050509; box-shadow: 0px 0px 15px rgba(218, 165, 32, 0.5); }
 
-        @keyframes logoFadeIn {
-            from { opacity: 0; transform: translateY(-20px) scale(0.95); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
+        .btn-buy { background: #DAA520; color: #050509; border: none; }
+        .btn-buy:hover { background: #FFFACD; transform: scale(1.05); }
+
+        .btn-outline { background: transparent; color: #DAA520; border: 2px solid #DAA520; }
+        .btn-outline:hover { background: rgba(218, 165, 32, 0.1); }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            max-width: 1000px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        .stat-item {
+            background: #0d0d1a;
+            padding: 20px;
+            border-radius: 10px;
+            border-bottom: 3px solid #DAA520;
+        }
+
+        .stat-value { font-family: 'Roboto Mono', monospace; font-size: 1.5rem; color: #DAA520; display: block; }
+        .stat-label { font-size: 0.8rem; color: #666; text-transform: uppercase; }
+
+        @keyframes pulse {
+            0% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(218, 165, 32, 0.5)); }
+            50% { transform: scale(1.02); filter: drop-shadow(0 0 35px rgba(218, 165, 32, 0.8)); }
+            100% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(218, 165, 32, 0.5)); }
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo-container">
-            <img src="https://i.ibb.co/bjXfjfRF/background-removal-TUFIRm-Jn-Zy1-QME0j-MSM2-Y2-Fm-Mjhh-NTNh-Mz-Ri-Yz-Bi-NTFl-MTQ3-ZGQx-Nm-Ey-ZTRm-MCMx-N.png" 
-                 alt="LUX Protocol Official Gold Coin" 
-                 class="lux-official-logo">
+    <section class="hero">
+        <img src="https://i.ibb.co/bjXfjfRF/background-removal-TUFIRm-Jn-Zy1-QME0j-MSM2-Y2-Fm-Mjhh-NTNh-Mz-Ri-Yz-Bi-NTFl-MTQ3-ZGQx-Nm-Ey-ZTRm-MCMx-N.png" class="lux-official-logo" alt="LUX Logo">
+        <h1>LUX PROTOCOL</h1>
+        <p class="tagline">The Scientific Super-Computer on Blockchain</p>
+
+        <div class="buy-box">
+            <h3>Genesis Presale is LIVE</h3>
+            <p style="font-size: 0.9rem; color: #DAA520;">1 POL = 10,000 LUX</p>
+            <div class="progress-container">
+                <div class="progress-bar"></div>
+            </div>
+            <p style="font-size: 0.7rem; text-align: right;">5,000,000 / 95,000,000 LUX Sold</p>
+            <br>
+            <div class="btn-group">
+                <a href="#" class="btn btn-buy">Buy LUX Now</a>
+                <a href="https://github.com/ARCHITECT1992/LUX-Protocol" class="btn btn-outline">View Code</a>
+            </div>
         </div>
-    </header>
 
-    <main>
-        <h1>LUX Protocol</h1>
-        <p class="manifesto">"From the Darkness of Speculation, to the Light of Science."</p>
-
-        <section class="posc-section">
-            <h2>Proof of Scientific Contribution (PoSC)</h2>
-            <p>LUX is more than a currency; it is a decentralized computing protocol designed to turn digital energy into tangible scientific progress, powering research in medicine, astronomy, and advanced physics.</p>
-        </section>
-
-        <a href="https://github.com/ARCHITECT1992/LUX-Protocol" class="btn-join" target="_blank">
-            Join the Scientific Army (GitHub)
-        </a>
-    </main>
+        <div class="stats-grid">
+            <div class="stat-item">
+                <span class="stat-label">Total Supply</span>
+                <span class="stat-value">100,000,000</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Scientific Nodes</span>
+                <span class="stat-value">0 (Beta)</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Data Processed</span>
+                <span class="stat-value">0.00 TB</span>
+            </div>
+        </div>
+    </section>
 
 </body>
 </html>
