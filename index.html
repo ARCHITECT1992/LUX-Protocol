@@ -30,7 +30,8 @@
             animation: pulse 3s infinite ease-in-out;
         }
 
-        h1 { font-family: 'Playfair Display', serif; font-size: 3rem; color: #DAA520; margin-bottom: 10px; }
+        h1 { font-family: 'Playfair Display', serif; font-size: 3.5rem; color: #DAA520; margin-bottom: 5px; }
+        .developer-tag { color: #DAA520; font-size: 0.8rem; letter-spacing: 3px; margin-bottom: 20px; text-transform: uppercase; font-weight: bold; }
         .tagline { color: #888; font-style: italic; margin-bottom: 30px; letter-spacing: 2px; }
 
         .mission-box {
@@ -122,6 +123,16 @@
         .stat-value { font-family: 'Roboto Mono', monospace; font-size: 1.5rem; color: #DAA520; display: block; }
         .stat-label { font-size: 0.7rem; color: #666; text-transform: uppercase; letter-spacing: 1px; }
 
+        footer {
+            padding: 40px 20px;
+            text-align: center;
+            border-top: 1px solid #1a1a2e;
+            background: #050509;
+            font-size: 0.8rem;
+            color: #666;
+        }
+        footer a { color: #DAA520; text-decoration: none; }
+
         @keyframes pulse {
             0% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(218, 165, 32, 0.5)); }
             50% { transform: scale(1.02); filter: drop-shadow(0 0 35px rgba(218, 165, 32, 0.8)); }
@@ -134,6 +145,7 @@
     <section class="hero">
         <img src="https://i.ibb.co/bjXfjfRF/background-removal-TUFIRm-Jn-Zy1-QME0j-MSM2-Y2-Fm-Mjhh-NTNh-Mz-Ri-Yz-Bi-NTFl-MTQ3-ZGQx-Nm-Ey-ZTRm-MCMx-N.png" class="lux-official-logo" alt="LUX Logo">
         <h1>LUX PROTOCOL</h1>
+        <p class="developer-tag">Designed by ARCHITECT</p>
         <p class="tagline">The Scientific Super-Computer on Blockchain</p>
 
         <div class="mission-box">
@@ -182,6 +194,12 @@
         </div>
     </section>
 
+    <footer>
+        <p>&copy; 2026 LUX Protocol. All rights reserved.</p>
+        <p>Architect & Lead Dev: <strong>ARCHITECT</strong></p>
+        <p>Support: <a href="mailto:davidgrezfox@gmail.com">davidgrezfox@gmail.com</a></p>
+    </footer>
+
     <script>
         function updateProgress(currentSold) {
             const totalSupply = 100000000;
@@ -192,7 +210,7 @@
 
         window.onload = function() {
             setTimeout(() => {
-                updateProgress(5000000); // يمكنك تغيير الرقم هنا
+                updateProgress(5000000); 
             }, 500);
         };
     </script>
