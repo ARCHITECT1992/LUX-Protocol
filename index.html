@@ -10,14 +10,13 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Cairo', sans-serif;
+            font-family: 'Inter', sans-serif;
             background-color: #050509;
             color: #E0E0E0;
             line-height: 1.6;
             overflow-x: hidden;
         }
 
-        /* Logo & Hero Section */
         .hero {
             text-align: center;
             padding: 60px 20px;
@@ -32,22 +31,20 @@
         }
 
         h1 { font-family: 'Playfair Display', serif; font-size: 3rem; color: #DAA520; margin-bottom: 10px; }
-        .tagline { color: #888; font-style: italic; margin-bottom: 30px; }
+        .tagline { color: #888; font-style: italic; margin-bottom: 30px; letter-spacing: 2px; }
 
-        /* Goal Section */
         .mission-box {
             max-width: 800px;
             margin: 0 auto 40px auto;
-            padding: 20px;
+            padding: 25px;
             background: rgba(218, 165, 32, 0.05);
             border-radius: 10px;
             border-left: 4px solid #DAA520;
             text-align: left;
         }
-        .mission-box h2 { color: #DAA520; font-size: 1.2rem; margin-bottom: 10px; text-transform: uppercase; }
+        .mission-box h2 { color: #DAA520; font-size: 1.1rem; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
         .mission-box p { font-size: 0.95rem; color: #ccc; }
 
-        /* Buy Section */
         .buy-box {
             background: #0a0a15;
             border: 1px solid #DAA520;
@@ -69,14 +66,13 @@
 
         .progress-bar {
             background: linear-gradient(90deg, #DAA520, #FFFACD);
-            width: 0%; /* سيتم التحكم به عبر JS */
+            width: 0%; 
             height: 100%;
             border-radius: 10px;
             transition: width 1.5s cubic-bezier(0.1, 0.5, 0.5, 1);
         }
 
-        /* Buttons */
-        .btn-group { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+        .btn-group { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 20px; }
         
         .btn {
             padding: 12px 25px;
@@ -103,12 +99,10 @@
             padding-top: 15px;
             border-top: 1px solid rgba(218, 165, 32, 0.2);
             font-size: 0.7rem;
-            word-break: break-all;
             color: #888;
         }
-        .contract-info a { color: #DAA520; text-decoration: none; font-weight: bold; }
+        .contract-info a { color: #DAA520; text-decoration: none; }
 
-        /* Stats Grid */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -126,7 +120,7 @@
         }
 
         .stat-value { font-family: 'Roboto Mono', monospace; font-size: 1.5rem; color: #DAA520; display: block; }
-        .stat-label { font-size: 0.8rem; color: #666; text-transform: uppercase; }
+        .stat-label { font-size: 0.7rem; color: #666; text-transform: uppercase; letter-spacing: 1px; }
 
         @keyframes pulse {
             0% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(218, 165, 32, 0.5)); }
@@ -143,12 +137,12 @@
         <p class="tagline">The Scientific Super-Computer on Blockchain</p>
 
         <div class="mission-box">
-            <h2>Our Objective</h2>
-            <p>هدف بروتوكول LUX هو بناء شبكة لا مركزية توفر طاقة حوسبة فائقة (Super-Computing) للأبحاث العلمية وتطوير نماذج الذكاء الاصطناعي. تعمل عملة LUX كوقود رقمي لتبادل القوة الحسابية، مما يتيح للعلماء حول العالم الوصول إلى موارد تقنية غير محدودة بأمان وشفافية.</p>
+            <h2>Our Vision</h2>
+            <p>LUX Protocol aims to build a decentralized network providing high-performance computing power for scientific research and AI model development. LUX tokens serve as the digital fuel for resource exchange, enabling researchers worldwide to access limitless computational power with transparency and security.</p>
         </div>
 
         <div class="buy-box">
-            <h3 id="status-title">Trading is LIVE</h3>
+            <h3 id="status-title">Trading is now LIVE</h3>
             <p style="font-size: 0.9rem; color: #DAA520;">Market Rate: 1 POL ≈ 10,000 LUX</p>
             
             <div class="progress-container">
@@ -175,11 +169,11 @@
         <div class="stats-grid">
             <div class="stat-item">
                 <span class="stat-label">Total Supply</span>
-                <span class="stat-value">100,000,000</span>
+                <span class="stat-value">100M</span>
             </div>
             <div class="stat-item">
-                <span class="stat-label">Scientific Nodes</span>
-                <span class="stat-value">Active (Beta)</span>
+                <span class="stat-label">Network Status</span>
+                <span class="stat-value">Mainnet Active</span>
             </div>
             <div class="stat-item">
                 <span class="stat-label">Data Capacity</span>
@@ -189,25 +183,18 @@
     </section>
 
     <script>
-        // كود التحكم في العداد التفاعلي
         function updateProgress(currentSold) {
             const totalSupply = 100000000;
             const percentage = (currentSold / totalSupply) * 100;
-            
-            // تحريك الشريط
             document.getElementById('lux-progress').style.width = percentage + "%";
-            
-            // تحديث الرقم المكتوب
             document.getElementById('sold-amount').innerText = currentSold.toLocaleString();
         }
 
-        // يمكنك تغيير هذا الرقم (5000000) لأي رقم تريد وسوف يتحرك الشريط تلقائياً
         window.onload = function() {
             setTimeout(() => {
-                updateProgress(5000000); 
+                updateProgress(5000000); // يمكنك تغيير الرقم هنا
             }, 500);
         };
     </script>
-
 </body>
 </html>
