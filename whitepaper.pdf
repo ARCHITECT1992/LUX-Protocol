@@ -1,0 +1,64 @@
+LUX Protocol: Decentralized Science (DeSci) Infrastructure
+Whitepaper Version 1.0 | March 2026
+
+1. Abstract
+The current scientific research landscape is plagued by centralized funding bottlenecks, opaque peer-review processes, and limited access to intellectual property (IP). LUX Protocol is a decentralized framework built on the Polygon network, designed to democratize scientific funding and data sharing. By leveraging blockchain technology, we provide a transparent, immutable, and borderless infrastructure for the future of global research.
+
+2. The Problem
+Funding Friction: Traditional research funding is often slow, bureaucratic, and influenced by non-scientific agendas.
+
+IP Silos: Intellectual property remains trapped in institutions, hindering global collaboration.
+
+Lack of Transparency: Scientific data is often locked behind paywalls, preventing decentralized validation.
+
+3. The LUX Solution
+LUX Protocol functions as an open-access layer for the DeSci (Decentralized Science) movement.
+
+Transparent Funding: Smart contracts automate research grants based on community-verified milestones.
+
+IP-NFTs: Research findings are minted as non-fungible tokens, allowing researchers to retain ownership while enabling liquid collaboration.
+
+Open Access Layer: A decentralized repository where research data is verified on-chain, ensuring reproducibility and trust.
+
+4. Tokenomics ($LUX)
+The $LUX token is the lifeblood of the protocol, serving as a medium of exchange for grants, governance, and platform access.
+
+Total Supply: 1,000,000,000 $LUX
+
+Allocation Strategy:
+
+60% Ecosystem & Grants: Reserved for researchers and scientific development.
+
+20% Liquidity Pool: Locked to ensure decentralized trading stability.
+
+10% Community & Governance: Incentivizing decentralized peer-review participation.
+
+10% Protocol Development: Continued technical maintenance and infrastructure scaling.
+
+5. The Burn Mechanism (Deflationary Model)
+To maintain long-term value, LUX Protocol implements a structured burn policy:
+
+A percentage of transaction fees from IP-NFT transactions is automatically sent to a burn address.
+
+Periodic "Milestone Burns" occur upon the completion of key scientific objectives, reducing circulating supply and rewarding early protocol participants.
+
+6. Roadmap (2026)
+Q1 2026: Infrastructure Deployment & Official Portal Launch (luxprotocol.online).
+
+Q2 2026: Launch of the first decentralized grant pool for biotechnology.
+
+Q3 2026: Introduction of IP-NFT minting functionality.
+
+Q4 2026: Cross-chain integration to facilitate broader scientific collaboration.
+
+7. Governance
+LUX Protocol is governed by its community. Token holders have the power to vote on:
+
+Which research proposals receive funding.
+
+Protocol parameter updates.
+
+Community-driven development priorities.
+
+8. Disclaimer
+This document is for informational purposes only. LUX Protocol is an evolving experiment in decentralized governance and scientific infrastructure. Participants should conduct their own due diligence before interacting with the protocol.
