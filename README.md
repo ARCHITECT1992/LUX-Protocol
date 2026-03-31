@@ -7,7 +7,7 @@
 ## 🚀 Live Status & Links
 | Resource | Link |
 | :--- | :--- |
-| 🌐 **Official Website** | [lux-protocol.netlify.app](https://lux-protocol.netlify.app) |
+| 🌐 **Official Website** | [luxprotocol.online](https://www.luxprotocol.online/) |
 | 💸 **Buy $LUX (SushiSwap)** | [Trade on SushiSwap V3](https://www.sushi.com/swap?chainId=137&tokens=NATIVE&tokens=0x1C9689E5493E2FfF3A62b72AE5abC59F233890fd) |
 | 📜 **Smart Contract** | [`0x1C9689E5493E2FfF3A62b72AE5abC59F233890fd`](https://polygonscan.com/token/0x1C9689E5493E2FfF3A62b72AE5abC59F233890fd) |
 | 📊 **Network** | **Polygon (PoS)** |
