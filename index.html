@@ -67,10 +67,10 @@
 
         .progress-bar {
             background: linear-gradient(90deg, #DAA520, #FFFACD);
-            width: 0%; 
+            width: 5%; /* Start slightly visible */
             height: 100%;
             border-radius: 10px;
-            transition: width 1.5s cubic-bezier(0.1, 0.5, 0.5, 1);
+            transition: width 2s cubic-bezier(0.1, 0.5, 0.5, 1);
         }
 
         .btn-group { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 20px; }
@@ -154,7 +154,7 @@
         </div>
 
         <div class="buy-box">
-            <h3 id="status-title">Trading is now LIVE</h3>
+            <h3 id="status-title">Live Trading Active</h3>
             <p style="font-size: 0.9rem; color: #DAA520;">Market Rate: 1 POL ≈ 10,000 LUX</p>
             
             <div class="progress-container">
@@ -164,7 +164,7 @@
                 <span id="sold-amount">5,000,000</span> / 100,000,000 LUX Circulating
             </p>
             
-            <a href="https://www.sushi.com/swap?chainId=137&tokens=NATIVE&tokens=0x1C9689E5493E2FfF3A62b72AE5abC59F233890fd" target="_blank" class="btn btn-buy">Buy LUX Now</a>
+            <a href="https://www.sushi.com/swap?chainId=137&tokens=NATIVE&tokens=0x1C9689E5493E2FfF3A62b72AE5abC59F233890fd" target="_blank" class="btn btn-buy">Buy LUX on SushiSwap</a>
 
             <div class="btn-group">
                 <a href="https://x.com/luxprotocoll" target="_blank" class="btn btn-outline">X / Twitter</a>
@@ -201,17 +201,38 @@
     </footer>
 
     <script>
+        function animateValue(id, start, end, duration) {
+            const obj = document.getElementById(id);
+            const range = end - start;
+            let startTime = null;
+
+            function step(timestamp) {
+                if (!startTime) startTime = timestamp;
+                const progress = Math.min((timestamp - startTime) / duration, 1);
+                obj.innerHTML = Math.floor(progress * range + start).toLocaleString();
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            }
+            window.requestAnimationFrame(step);
+        }
+
         function updateProgress(currentSold) {
             const totalSupply = 100000000;
             const percentage = (currentSold / totalSupply) * 100;
-            document.getElementById('lux-progress').style.width = percentage + "%";
-            document.getElementById('sold-amount').innerText = currentSold.toLocaleString();
+            
+            // Animate Bar
+            setTimeout(() => {
+                document.getElementById('lux-progress').style.width = percentage + "%";
+            }, 100);
+
+            // Animate Numbers
+            animateValue("sold-amount", 5000000, currentSold, 2500);
         }
 
         window.onload = function() {
-            setTimeout(() => {
-                updateProgress(5000000); 
-            }, 500);
+            // Updated amount based on recent transactions (Initial 5M + ~38k from trades)
+            updateProgress(5038155); 
         };
     </script>
 </body>
