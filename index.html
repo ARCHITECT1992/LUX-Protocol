@@ -17,15 +17,60 @@
             overflow-x: hidden;
         }
 
+        /* ── Animated star field ── */
+        #starfield {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .star {
+            position: absolute;
+            border-radius: 50%;
+            background: #DAA520;
+            opacity: 0;
+            animation: twinkle var(--dur) var(--delay) infinite ease-in-out;
+        }
+        @keyframes twinkle {
+            0%,100% { opacity: 0; transform: scale(0.8); }
+            50%      { opacity: var(--op); transform: scale(1); }
+        }
+
+        /* ── Ticker bar ── */
+        .ticker-bar {
+            background: rgba(218,165,32,0.08);
+            border-bottom: 1px solid rgba(218,165,32,0.2);
+            padding: 8px 0;
+            overflow: hidden;
+            white-space: nowrap;
+            position: relative;
+            z-index: 10;
+        }
+        .ticker-inner {
+            display: inline-block;
+            animation: ticker 28s linear infinite;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.75rem;
+            color: #DAA520;
+            letter-spacing: 1px;
+        }
+        @keyframes ticker {
+            from { transform: translateX(100vw); }
+            to   { transform: translateX(-100%); }
+        }
+
         .hero {
             text-align: center;
             padding: 60px 20px;
             background: radial-gradient(circle at center, #1a1a2e 0%, #050509 100%);
+            position: relative;
+            z-index: 1;
         }
 
         .lux-official-logo {
-            width: 250px; 
-            filter: drop-shadow(0px 0px 20px rgba(218, 165, 32, 0.5));
+            width: 250px;
+            filter: drop-shadow(0px 0px 20px rgba(218,165,32,0.5));
             margin-bottom: 30px;
             animation: pulse 3s infinite ease-in-out;
         }
@@ -38,7 +83,7 @@
             max-width: 800px;
             margin: 0 auto 40px auto;
             padding: 25px;
-            background: rgba(218, 165, 32, 0.05);
+            background: rgba(218,165,32,0.05);
             border-radius: 10px;
             border-left: 4px solid #DAA520;
             text-align: left;
@@ -46,6 +91,7 @@
         .mission-box h2 { color: #DAA520; font-size: 1.1rem; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; }
         .mission-box p { font-size: 0.95rem; color: #ccc; }
 
+        /* ── Buy box ── */
         .buy-box {
             background: #0a0a15;
             border: 1px solid #DAA520;
@@ -53,8 +99,54 @@
             border-radius: 15px;
             max-width: 500px;
             margin: 0 auto 50px auto;
-            box-shadow: 0 0 30px rgba(218, 165, 32, 0.1);
+            box-shadow: 0 0 30px rgba(218,165,32,0.1);
+            position: relative;
         }
+
+        /* Live price row */
+        .price-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+        .price-label { font-size: 0.9rem; color: #DAA520; }
+        .live-badge {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.65rem;
+            color: #4cff82;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .live-dot {
+            width: 7px; height: 7px;
+            border-radius: 50%;
+            background: #4cff82;
+            animation: blink 1.2s infinite;
+        }
+        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+        .price-display {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 1.4rem;
+            color: #FFFACD;
+            letter-spacing: 1px;
+            text-align: left;
+            margin-bottom: 4px;
+            transition: color 0.4s;
+        }
+        .price-change {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.8rem;
+            margin-bottom: 14px;
+            text-align: left;
+        }
+        .pos { color: #4cff82; }
+        .neg { color: #ff4c6e; }
 
         .progress-container {
             background: #1a1a2e;
@@ -64,17 +156,29 @@
             overflow: hidden;
             position: relative;
         }
-
         .progress-bar {
             background: linear-gradient(90deg, #DAA520, #FFFACD);
-            width: 5%; /* Start slightly visible */
+            width: 5%;
             height: 100%;
             border-radius: 10px;
-            transition: width 2s cubic-bezier(0.1, 0.5, 0.5, 1);
+            transition: width 2s cubic-bezier(0.1,0.5,0.5,1);
+            position: relative;
         }
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            right: 0; top: 0;
+            width: 20px; height: 100%;
+            background: rgba(255,255,255,0.35);
+            filter: blur(4px);
+            border-radius: 0 10px 10px 0;
+            animation: shimmer 1.8s infinite;
+        }
+        @keyframes shimmer { 0%,100%{opacity:0.3} 50%{opacity:1} }
 
+        /* ── Buttons ── */
         .btn-group { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 20px; }
-        
+
         .btn {
             padding: 12px 25px;
             text-decoration: none;
@@ -92,18 +196,48 @@
         .btn-buy { background: #DAA520; color: #050509; border: none; width: 100%; justify-content: center; margin-bottom: 15px; font-size: 1.1rem;}
         .btn-buy:hover { background: #FFFACD; transform: scale(1.02); }
 
-        .btn-outline { background: transparent; color: #DAA520; border: 1px solid rgba(218, 165, 32, 0.5); }
-        .btn-outline:hover { background: rgba(218, 165, 32, 0.1); border-color: #DAA520; }
+        .btn-outline { background: transparent; color: #DAA520; border: 1px solid rgba(218,165,32,0.5); }
+        .btn-outline:hover { background: rgba(218,165,32,0.1); border-color: #DAA520; }
+
+        /* Social icons */
+        .btn svg { width: 16px; height: 16px; flex-shrink: 0; }
 
         .contract-info {
             margin-top: 25px;
             padding-top: 15px;
-            border-top: 1px solid rgba(218, 165, 32, 0.2);
+            border-top: 1px solid rgba(218,165,32,0.2);
             font-size: 0.7rem;
             color: #888;
         }
         .contract-info a { color: #DAA520; text-decoration: none; }
 
+        /* Copy address button */
+        .copy-addr {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: none;
+            border: none;
+            color: #DAA520;
+            cursor: pointer;
+            font-size: 0.7rem;
+            font-family: 'Roboto Mono', monospace;
+            word-break: break-all;
+            text-align: left;
+            padding: 0;
+            margin-top: 4px;
+            transition: color 0.2s;
+        }
+        .copy-addr:hover { color: #FFFACD; }
+        .copy-addr svg { width: 12px; height: 12px; flex-shrink: 0; }
+        .copy-toast {
+            display: none;
+            font-size: 0.65rem;
+            color: #4cff82;
+            margin-top: 3px;
+        }
+
+        /* ── Stats ── */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -112,16 +246,32 @@
             margin: 50px auto;
             padding: 0 20px;
         }
-
         .stat-item {
             background: #0d0d1a;
             padding: 20px;
             border-radius: 10px;
             border-bottom: 3px solid #DAA520;
+            transition: transform 0.3s, box-shadow 0.3s;
         }
-
+        .stat-item:hover { transform: translateY(-4px); box-shadow: 0 8px 25px rgba(218,165,32,0.15); }
         .stat-value { font-family: 'Roboto Mono', monospace; font-size: 1.5rem; color: #DAA520; display: block; }
         .stat-label { font-size: 0.7rem; color: #666; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* ── Volume/liquidity mini stats ── */
+        .mini-stats {
+            display: flex;
+            gap: 15px;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            background: rgba(218,165,32,0.04);
+            border: 1px solid rgba(218,165,32,0.12);
+            border-radius: 8px;
+            padding: 14px 10px;
+            margin-top: 16px;
+        }
+        .mini-stat { text-align: center; }
+        .mini-stat-val { display: block; font-family: 'Roboto Mono', monospace; font-size: 0.85rem; color: #FFFACD; }
+        .mini-stat-lbl { font-size: 0.62rem; color: #666; text-transform: uppercase; letter-spacing: 1px; }
 
         footer {
             padding: 40px 20px;
@@ -130,17 +280,35 @@
             background: #050509;
             font-size: 0.8rem;
             color: #666;
+            position: relative;
+            z-index: 1;
         }
         footer a { color: #DAA520; text-decoration: none; }
 
         @keyframes pulse {
-            0% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(218, 165, 32, 0.5)); }
-            50% { transform: scale(1.02); filter: drop-shadow(0 0 35px rgba(218, 165, 32, 0.8)); }
-            100% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(218, 165, 32, 0.5)); }
+            0%   { transform: scale(1);    filter: drop-shadow(0 0 20px rgba(218,165,32,0.5)); }
+            50%  { transform: scale(1.02); filter: drop-shadow(0 0 35px rgba(218,165,32,0.8)); }
+            100% { transform: scale(1);    filter: drop-shadow(0 0 20px rgba(218,165,32,0.5)); }
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 480px) {
+            h1 { font-size: 2.4rem; }
+            .buy-box { padding: 20px 16px; }
         }
     </style>
 </head>
 <body>
+
+    <!-- Animated star field -->
+    <div id="starfield"></div>
+
+    <!-- Live ticker -->
+    <div class="ticker-bar">
+        <span class="ticker-inner" id="ticker-text">
+            ✦ LUX PROTOCOL &nbsp;|&nbsp; Polygon Mainnet &nbsp;|&nbsp; Contract: 0x1C9689E5493E2FfF3A62b72AE5abC59F233890fd &nbsp;|&nbsp; Total Supply: 100,000,000 LUX &nbsp;|&nbsp; Data Capacity: Peta-Scale &nbsp;|&nbsp; Scientific Computing on Blockchain &nbsp;✦
+        </span>
+    </div>
 
     <section class="hero">
         <img src="https://i.ibb.co/bjXfjfRF/background-removal-TUFIRm-Jn-Zy1-QME0j-MSM2-Y2-Fm-Mjhh-NTNh-Mz-Ri-Yz-Bi-NTFl-MTQ3-ZGQx-Nm-Ey-ZTRm-MCMx-N.png" class="lux-official-logo" alt="LUX Logo">
@@ -155,26 +323,83 @@
 
         <div class="buy-box">
             <h3 id="status-title">Live Trading Active</h3>
-            <p style="font-size: 0.9rem; color: #DAA520;">Market Rate: 1 POL ≈ 10,000 LUX</p>
-            
-            <div class="progress-container">
+
+            <!-- Live price -->
+            <div class="price-row" style="margin-top:12px;">
+                <span class="price-label">LUX / USD</span>
+                <span class="live-badge"><span class="live-dot"></span> Live</span>
+            </div>
+            <div class="price-display" id="live-price">Loading…</div>
+            <div class="price-change" id="price-change">&nbsp;</div>
+
+            <!-- Mini market stats -->
+            <div class="mini-stats">
+                <div class="mini-stat">
+                    <span class="mini-stat-val" id="stat-vol">—</span>
+                    <span class="mini-stat-lbl">24h Volume</span>
+                </div>
+                <div class="mini-stat">
+                    <span class="mini-stat-val" id="stat-liq">—</span>
+                    <span class="mini-stat-lbl">Liquidity</span>
+                </div>
+                <div class="mini-stat">
+                    <span class="mini-stat-val" id="stat-mcap">—</span>
+                    <span class="mini-stat-lbl">Mkt Cap</span>
+                </div>
+                <div class="mini-stat">
+                    <span class="mini-stat-val" id="stat-txns">—</span>
+                    <span class="mini-stat-lbl">24h Txns</span>
+                </div>
+            </div>
+
+            <div class="progress-container" style="margin-top:20px;">
                 <div class="progress-bar" id="lux-progress"></div>
             </div>
-            <p style="font-size: 0.75rem; text-align: right; color: #DAA520;">
+            <p style="font-size:0.75rem; text-align:right; color:#DAA520;">
                 <span id="sold-amount">5,000,000</span> / 100,000,000 LUX Circulating
             </p>
             
-            <a href="https://www.sushi.com/swap?chainId=137&tokens=NATIVE&tokens=0x1C9689E5493E2FfF3A62b72AE5abC59F233890fd" target="_blank" class="btn btn-buy">Buy LUX on SushiSwap</a>
+            <a href="https://www.sushi.com/swap?chainId=137&tokens=NATIVE&tokens=0x1C9689E5493E2FfF3A62b72AE5abC59F233890fd" target="_blank" class="btn btn-buy">
+                <!-- SushiSwap icon -->
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg>
+                Buy LUX on SushiSwap
+            </a>
 
             <div class="btn-group">
-                <a href="https://x.com/luxprotocoll" target="_blank" class="btn btn-outline">X / Twitter</a>
-                <a href="https://github.com/ARCHITECT1992/LUX-Protocol" target="_blank" class="btn btn-outline">GitHub</a>
-                <a href="https://polygonscan.com/token/0x1C9689E5493E2FfF3A62b72AE5abC59F233890fd" target="_blank" class="btn btn-outline">Contract</a>
+                <!-- X / Twitter -->
+                <a href="https://x.com/luxprotocoll" target="_blank" class="btn btn-outline" title="X / Twitter">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    Twitter
+                </a>
+                <!-- Telegram -->
+                <a href="https://t.me/luxprotocolbot" target="_blank" class="btn btn-outline" title="Telegram">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.96 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                    Telegram
+                </a>
+                <!-- GitHub -->
+                <a href="https://github.com/ARCHITECT1992/LUX-Protocol" target="_blank" class="btn btn-outline" title="GitHub">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                    GitHub
+                </a>
+                <!-- DexScreener -->
+                <a href="https://dexscreener.com/polygon/0x6fb3f099b66036fec2ebe62e9ca8662104b3988d" target="_blank" class="btn btn-outline" title="DexScreener">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                    DexScreener
+                </a>
+                <!-- PolygonScan -->
+                <a href="https://polygonscan.com/token/0x1C9689E5493E2FfF3A62b72AE5abC59F233890fd" target="_blank" class="btn btn-outline" title="PolygonScan">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
+                    Contract
+                </a>
             </div>
             
             <div class="contract-info">
                 Official Polygon Address:<br>
-                <a href="https://polygonscan.com/token/0x1C9689E5493E2FfF3A62b72AE5abC59F233890fd" target="_blank">0x1C9689E5493E2FfF3A62b72AE5abC59F233890fd</a>
+                <button class="copy-addr" id="copy-btn" onclick="copyAddress()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                    0x1C9689E5493E2FfF3A62b72AE5abC59F233890fd
+                </button>
+                <div class="copy-toast" id="copy-toast">✓ Copied to clipboard!</div>
             </div>
         </div>
 
@@ -185,55 +410,166 @@
             </div>
             <div class="stat-item">
                 <span class="stat-label">Network Status</span>
-                <span class="stat-value">Mainnet Active</span>
+                <span class="stat-value" id="network-stat">Mainnet Active</span>
             </div>
             <div class="stat-item">
                 <span class="stat-label">Data Capacity</span>
                 <span class="stat-value">Peta-Scale</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Live Price (USD)</span>
+                <span class="stat-value" id="stat-price-grid">—</span>
             </div>
         </div>
     </section>
 
     <footer>
         <p>&copy; 2026 LUX Protocol. All rights reserved.</p>
-        <p>Architect & Lead Dev: <strong>ARCHITECT</strong></p>
+        <p>Architect &amp; Lead Dev: <strong>ARCHITECT</strong></p>
         <p>Support: <a href="mailto:davidgrezfox@gmail.com">davidgrezfox@gmail.com</a></p>
     </footer>
 
     <script>
-        function animateValue(id, start, end, duration) {
-            const obj = document.getElementById(id);
-            const range = end - start;
-            let startTime = null;
+    /* ═══════════════════════════════════════
+       STAR FIELD
+    ═══════════════════════════════════════ */
+    (function() {
+        const sf = document.getElementById('starfield');
+        for (let i = 0; i < 80; i++) {
+            const s = document.createElement('div');
+            s.className = 'star';
+            const size = Math.random() * 2.5 + 0.5;
+            s.style.cssText = `
+                width:${size}px; height:${size}px;
+                left:${Math.random()*100}%; top:${Math.random()*100}%;
+                --dur:${(Math.random()*4+2).toFixed(1)}s;
+                --delay:${(Math.random()*6).toFixed(1)}s;
+                --op:${(Math.random()*0.5+0.1).toFixed(2)};
+            `;
+            sf.appendChild(s);
+        }
+    })();
 
-            function step(timestamp) {
-                if (!startTime) startTime = timestamp;
-                const progress = Math.min((timestamp - startTime) / duration, 1);
-                obj.innerHTML = Math.floor(progress * range + start).toLocaleString();
-                if (progress < 1) {
-                    window.requestAnimationFrame(step);
-                }
+    /* ═══════════════════════════════════════
+       PROGRESS BAR
+    ═══════════════════════════════════════ */
+    function animateValue(id, start, end, duration) {
+        const obj = document.getElementById(id);
+        const range = end - start;
+        let startTime = null;
+        function step(ts) {
+            if (!startTime) startTime = ts;
+            const p = Math.min((ts - startTime) / duration, 1);
+            obj.innerHTML = Math.floor(p * range + start).toLocaleString();
+            if (p < 1) window.requestAnimationFrame(step);
+        }
+        window.requestAnimationFrame(step);
+    }
+
+    function updateProgress(currentSold) {
+        const totalSupply = 100000000;
+        const percentage = (currentSold / totalSupply) * 100;
+        setTimeout(() => {
+            document.getElementById('lux-progress').style.width = percentage + "%";
+        }, 100);
+        animateValue("sold-amount", 5000000, currentSold, 2500);
+    }
+
+    /* ═══════════════════════════════════════
+       FORMAT HELPERS
+    ═══════════════════════════════════════ */
+    function fmtUSD(n) {
+        if (n === null || n === undefined || isNaN(n)) return '—';
+        if (n >= 1e6) return '$' + (n/1e6).toFixed(2) + 'M';
+        if (n >= 1e3) return '$' + (n/1e3).toFixed(2) + 'K';
+        return '$' + n.toFixed(6);
+    }
+    function fmtPrice(n) {
+        if (!n || isNaN(n)) return '—';
+        return '$' + (n < 0.001 ? n.toExponential(4) : n.toFixed(8));
+    }
+    function fmtPct(n) {
+        if (n === null || n === undefined || isNaN(n)) return '';
+        const sign = n >= 0 ? '+' : '';
+        return sign + n.toFixed(2) + '%';
+    }
+
+    /* ═══════════════════════════════════════
+       LIVE DATA — DexScreener API
+    ═══════════════════════════════════════ */
+    const PAIR_ADDR = '0x6fb3f099b66036fec2ebe62e9ca8662104b3988d';
+    const DS_API    = `https://api.dexscreener.com/latest/dex/pairs/polygon/${PAIR_ADDR}`;
+
+    let lastPrice = null;
+
+    async function fetchLiveData() {
+        try {
+            const res  = await fetch(DS_API);
+            const data = await res.json();
+            const pair = data?.pair || data?.pairs?.[0];
+            if (!pair) return;
+
+            const price  = parseFloat(pair.priceUsd);
+            const pct24  = pair.priceChange?.h24 ?? null;
+            const vol24  = pair.volume?.h24 ?? null;
+            const liq    = pair.liquidity?.usd ?? null;
+            const mcap   = pair.fdv ?? null;
+            const txnBuy = pair.txns?.h24?.buys ?? 0;
+            const txnSel = pair.txns?.h24?.sells ?? 0;
+
+            // Price display
+            const priceEl = document.getElementById('live-price');
+            priceEl.textContent = fmtPrice(price);
+            if (lastPrice !== null) {
+                priceEl.style.color = price > lastPrice ? '#4cff82' : price < lastPrice ? '#ff4c6e' : '#FFFACD';
+                setTimeout(() => { priceEl.style.color = '#FFFACD'; }, 1200);
             }
-            window.requestAnimationFrame(step);
+            lastPrice = price;
+
+            // 24h change
+            const chEl = document.getElementById('price-change');
+            if (pct24 !== null) {
+                chEl.textContent = fmtPct(pct24) + ' (24h)';
+                chEl.className   = 'price-change ' + (pct24 >= 0 ? 'pos' : 'neg');
+            }
+
+            // Mini stats
+            document.getElementById('stat-vol').textContent  = fmtUSD(vol24);
+            document.getElementById('stat-liq').textContent  = fmtUSD(liq);
+            document.getElementById('stat-mcap').textContent = fmtUSD(mcap);
+            document.getElementById('stat-txns').textContent = (txnBuy + txnSel).toLocaleString();
+
+            // Stats grid price
+            document.getElementById('stat-price-grid').textContent = fmtPrice(price);
+
+            // Update ticker dynamically
+            document.getElementById('ticker-text').textContent =
+                `✦ LUX / USD ${fmtPrice(price)}  ${pct24 !== null ? fmtPct(pct24)+' 24h' : ''}  |  Vol: ${fmtUSD(vol24)}  |  Liq: ${fmtUSD(liq)}  |  Mkt Cap: ${fmtUSD(mcap)}  |  Contract: 0x1C9689E5493E2FfF3A62b72AE5abC59F233890fd  |  Polygon Mainnet  ✦`;
+
+        } catch(e) {
+            document.getElementById('live-price').textContent = 'Data unavailable';
         }
+    }
 
-        function updateProgress(currentSold) {
-            const totalSupply = 100000000;
-            const percentage = (currentSold / totalSupply) * 100;
-            
-            // Animate Bar
-            setTimeout(() => {
-                document.getElementById('lux-progress').style.width = percentage + "%";
-            }, 100);
+    /* ═══════════════════════════════════════
+       COPY ADDRESS
+    ═══════════════════════════════════════ */
+    function copyAddress() {
+        navigator.clipboard.writeText('0x1C9689E5493E2FfF3A62b72AE5abC59F233890fd').then(() => {
+            const toast = document.getElementById('copy-toast');
+            toast.style.display = 'block';
+            setTimeout(() => { toast.style.display = 'none'; }, 2000);
+        });
+    }
 
-            // Animate Numbers
-            animateValue("sold-amount", 5000000, currentSold, 2500);
-        }
-
-        window.onload = function() {
-            // Updated amount based on recent transactions (Initial 5M + ~38k from trades)
-            updateProgress(5038155); 
-        };
+    /* ═══════════════════════════════════════
+       INIT
+    ═══════════════════════════════════════ */
+    window.onload = function() {
+        updateProgress(5038155);
+        fetchLiveData();
+        setInterval(fetchLiveData, 30000); // refresh every 30s
+    };
     </script>
 </body>
 </html>
