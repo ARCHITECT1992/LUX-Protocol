@@ -37,7 +37,7 @@ The LUX Protocol is deployed on the **Polygon Blockchain**, ensuring high scalab
 
 ## 🏗 Developer & Architect
 - **Lead Architect:** **ARCHITECT**
-- **Support:** davidgrezfox@gmail.com
+- **Support:** info@luxprotocol.online
 - **Contract Language:** Solidity ^0.8.20
 
 ## 📜 License
