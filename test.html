@@ -5,9 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LUX Protocol | The Light of Science</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&family=Playfair+Display:wght@700&family=Roboto+Mono:wght@400&family=Inter:wght@400;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.ethers.io/lib/ethers-5.7.umd.min.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@walletconnect/ethereum-provider@2.13.0/dist/index.umd.js"></script>
+
     <style>
+        /* [نفس الستايل الخاص بك مع تحسينات بسيطة] */
         *{margin:0;padding:0;box-sizing:border-box}
         body{font-family:'Inter',sans-serif;background:#050509;color:#E0E0E0;line-height:1.6;overflow-x:hidden}
         #starfield{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
@@ -31,80 +34,31 @@
         .live-dot{width:7px;height:7px;border-radius:50%;background:#4cff82;animation:blink 1.2s infinite}
         @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
         .price-display{font-family:'Roboto Mono',monospace;font-size:1.4rem;color:#FFFACD;letter-spacing:1px;text-align:left;margin-bottom:4px;transition:color .4s}
-        .price-change{font-family:'Roboto Mono',monospace;font-size:.8rem;margin-bottom:14px;text-align:left}
-        .pos{color:#4cff82}.neg{color:#ff4c6e}
         .mini-stats{display:flex;gap:15px;justify-content:space-around;flex-wrap:wrap;background:rgba(218,165,32,.04);border:1px solid rgba(218,165,32,.12);border-radius:8px;padding:14px 10px;margin-top:16px}
         .mini-stat{text-align:center}
         .mini-stat-val{display:block;font-family:'Roboto Mono',monospace;font-size:.85rem;color:#FFFACD}
         .mini-stat-lbl{font-size:.62rem;color:#666;text-transform:uppercase;letter-spacing:1px}
         .progress-container{background:#1a1a2e;border-radius:10px;height:20px;margin:20px 0;overflow:hidden;position:relative}
         .progress-bar{background:linear-gradient(90deg,#DAA520,#FFFACD);width:5%;height:100%;border-radius:10px;transition:width 2s cubic-bezier(.1,.5,.5,1);position:relative}
-        .progress-bar::after{content:'';position:absolute;right:0;top:0;width:20px;height:100%;background:rgba(255,255,255,.35);filter:blur(4px);border-radius:0 10px 10px 0;animation:shimmer 1.8s infinite}
-        @keyframes shimmer{0%,100%{opacity:.3}50%{opacity:1}}
         .btn-group{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:20px}
         .btn{padding:12px 25px;text-decoration:none;font-weight:bold;font-size:.85rem;text-transform:uppercase;border-radius:5px;transition:.3s;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
-        .btn-buy{background:#DAA520;color:#050509;border:none;width:100%;justify-content:center;margin-bottom:15px;font-size:1.1rem}
-        .btn-buy:hover{background:#FFFACD;transform:scale(1.02)}
         .btn-outline{background:transparent;color:#DAA520;border:1px solid rgba(218,165,32,.5)}
         .btn-outline:hover{background:rgba(218,165,32,.1);border-color:#DAA520}
-        .btn svg{width:16px;height:16px;flex-shrink:0}
-        .contract-info{margin-top:25px;padding-top:15px;border-top:1px solid rgba(218,165,32,.2);font-size:.7rem;color:#888}
-        .copy-addr{display:inline-flex;align-items:center;gap:5px;background:none;border:none;color:#DAA520;cursor:pointer;font-size:.7rem;font-family:'Roboto Mono',monospace;word-break:break-all;text-align:left;padding:0;margin-top:4px;transition:color .2s}
-        .copy-addr:hover{color:#FFFACD}
-        .copy-addr svg{width:12px;height:12px;flex-shrink:0}
-        .copy-toast{display:none;font-size:.65rem;color:#4cff82;margin-top:3px}
-
-        /* Wallet Modal */
-        .wallet-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+        
+        /* Modal & Calc */
+        .wallet-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
         .wallet-overlay.open{display:flex}
-        .wallet-modal{background:#0d0d1e;border:1px solid rgba(218,165,32,.4);border-radius:16px;padding:28px;width:340px;max-width:92vw;position:relative;animation:fadeUp .25s ease}
-        @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-        .wallet-modal h4{color:#DAA520;font-size:1rem;text-align:center;margin-bottom:6px;letter-spacing:1px;text-transform:uppercase}
-        .wallet-modal p.subtitle{text-align:center;font-size:.75rem;color:#666;margin-bottom:20px}
-        .wallet-close{position:absolute;top:14px;right:16px;background:none;border:none;color:#666;font-size:1.3rem;cursor:pointer;line-height:1}
-        .wallet-close:hover{color:#DAA520}
-        .wallet-option{display:flex;align-items:center;gap:14px;padding:14px 16px;border:1px solid rgba(218,165,32,.2);border-radius:10px;margin-bottom:10px;cursor:pointer;transition:.2s;background:rgba(218,165,32,.03)}
-        .wallet-option:hover{background:rgba(218,165,32,.09);border-color:rgba(218,165,32,.6)}
-        .wallet-option:last-child{margin-bottom:0}
-        .wallet-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0}
-        .wallet-info strong{display:block;color:#E0E0E0;font-size:.9rem}
-        .wallet-info small{color:#666;font-size:.72rem}
-        .wallet-divider{text-align:center;font-size:.65rem;color:#444;margin:12px 0;letter-spacing:2px;text-transform:uppercase}
-        .modal-status{font-size:.72rem;text-align:center;margin-top:14px;min-height:18px;font-family:'Roboto Mono',monospace;color:#888}
-
-        /* Calculator */
+        .wallet-modal{background:#0d0d1e;border:1px solid #DAA520;border-radius:16px;padding:28px;width:340px;max-width:92vw;position:relative;}
+        .wallet-option{display:flex;align-items:center;gap:14px;padding:14px 16px;border:1px solid rgba(218,165,32,0.2);border-radius:10px;margin-bottom:10px;cursor:pointer;background:rgba(255,255,255,0.02)}
+        .wallet-option:hover{border-color:#DAA520;background:rgba(218,165,32,0.1)}
         .calc-section{margin-top:22px;padding-top:18px;border-top:1px solid rgba(218,165,32,.2)}
-        .calc-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px}
-        .calc-title{font-size:.75rem;text-transform:uppercase;letter-spacing:1px;color:#DAA520;font-weight:bold}
-        .wallet-btn{background:rgba(218,165,32,.12);border:1px solid rgba(218,165,32,.5);color:#DAA520;font-size:.72rem;font-weight:bold;text-transform:uppercase;letter-spacing:.5px;padding:6px 14px;border-radius:5px;cursor:pointer;transition:.2s;display:flex;align-items:center;gap:6px}
-        .wallet-btn:hover{background:rgba(218,165,32,.22)}
-        .wallet-btn.connected{border-color:#4cff82;color:#4cff82;background:rgba(76,255,130,.08)}
-        .wallet-addr{font-family:'Roboto Mono',monospace;font-size:.65rem;color:#4cff82;margin-bottom:10px;text-align:left;display:none}
-        .calc-input-row{display:flex;align-items:center;border:1px solid rgba(218,165,32,.4);border-radius:7px;overflow:hidden;background:#07071a;margin-bottom:10px}
+        .calc-input-row{display:flex;align-items:center;border:1px solid #DAA520;border-radius:7px;overflow:hidden;background:#07071a;margin-bottom:10px}
         .calc-input{flex:1;background:transparent;border:none;outline:none;color:#FFFACD;font-family:'Roboto Mono',monospace;font-size:1rem;padding:11px 14px}
-        .calc-input::placeholder{color:#555}
-        .calc-unit{padding:0 14px;font-size:.75rem;font-weight:bold;color:#DAA520;background:rgba(218,165,32,.08);border-left:1px solid rgba(218,165,32,.25);min-height:44px;display:flex;align-items:center;letter-spacing:1px}
-        .calc-preview{font-family:'Roboto Mono',monospace;font-size:.82rem;color:#FFFACD;background:rgba(218,165,32,.06);border:1px dashed rgba(218,165,32,.2);border-radius:6px;padding:10px 14px;margin-bottom:12px;min-height:38px;display:flex;align-items:center}
-        .calc-preview:empty{display:none}
-        .lux-amount{color:#DAA520;font-weight:bold;font-size:1rem}
-        .btn-send{width:100%;justify-content:center;background:linear-gradient(90deg,#1a4a2e,#0a2a1a);border:1px solid #4cff82;color:#4cff82;font-size:.9rem;padding:13px;border-radius:6px;cursor:pointer;transition:.3s;letter-spacing:1px;display:flex;align-items:center;gap:8px}
-        .btn-send:hover:not(:disabled){background:rgba(76,255,130,.12);box-shadow:0 0 18px rgba(76,255,130,.2)}
-        .btn-send:disabled{opacity:.35;cursor:not-allowed;border-color:#444;color:#666}
-        .tx-status{font-family:'Roboto Mono',monospace;font-size:.75rem;color:#aaa;margin-top:10px;line-height:1.6;text-align:center;min-height:20px}
-        .tx-status a{color:#4cff82;text-decoration:none}
-        .tx-status.error{color:#ff4c6e}
-        .tx-status.success{color:#4cff82}
-        .rate-note{font-size:.65rem;color:#555;text-align:center;margin-top:6px}
-
-        .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;max-width:1000px;margin:50px auto;padding:0 20px}
-        .stat-item{background:#0d0d1a;padding:20px;border-radius:10px;border-bottom:3px solid #DAA520;transition:transform .3s,box-shadow .3s}
-        .stat-item:hover{transform:translateY(-4px);box-shadow:0 8px 25px rgba(218,165,32,.15)}
-        .stat-value{font-family:'Roboto Mono',monospace;font-size:1.5rem;color:#DAA520;display:block}
-        .stat-label{font-size:.7rem;color:#666;text-transform:uppercase;letter-spacing:1px}
-        footer{padding:40px 20px;text-align:center;border-top:1px solid #1a1a2e;background:#050509;font-size:.8rem;color:#666;position:relative;z-index:1}
-        footer a{color:#DAA520;text-decoration:none}
-        @keyframes pulse{0%,100%{transform:scale(1);filter:drop-shadow(0 0 20px rgba(218,165,32,.5))}50%{transform:scale(1.02);filter:drop-shadow(0 0 35px rgba(218,165,32,.8))}}
-        @media(max-width:480px){h1{font-size:2.4rem}.buy-box{padding:20px 16px}.wallet-modal{padding:22px 18px}}
+        .calc-unit{padding:0 14px;font-size:.75rem;font-weight:bold;color:#DAA520;background:rgba(218,165,32,.08)}
+        .btn-send{width:100%;justify-content:center;background:#DAA520;color:#000;font-size:.9rem;padding:13px;border-radius:6px;cursor:pointer;font-weight:bold;border:none}
+        .btn-send:disabled{opacity:0.3;cursor:not-allowed}
+        footer{padding:40px 20px;text-align:center;border-top:1px solid #1a1a2e;color:#666}
+        @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.02)}}
     </style>
 </head>
 <body>
@@ -112,337 +66,140 @@
 <div id="starfield"></div>
 
 <div class="ticker-bar">
-    <span class="ticker-inner" id="ticker-text">✦ LUX PROTOCOL &nbsp;|&nbsp; Polygon Mainnet &nbsp;|&nbsp; Contract: 0x1C9689E5493E2FfF3A62b72AE5abC59F233890fd &nbsp;|&nbsp; Total Supply: 100,000,000 LUX &nbsp;|&nbsp; Data Capacity: Peta-Scale &nbsp;|&nbsp; Scientific Computing on Blockchain &nbsp;✦</span>
+    <span class="ticker-inner" id="ticker-text">✦ LUX PROTOCOL | Presale Phase 1 | Rate: 1 POL = 10,000 LUX | Scientific Computing on Blockchain ✦</span>
 </div>
 
-<!-- ══════════ WALLET MODAL ══════════ -->
 <div class="wallet-overlay" id="wallet-overlay">
     <div class="wallet-modal">
-        <button class="wallet-close" onclick="closeWalletModal()">✕</button>
-        <h4>Connect Wallet</h4>
-        <p class="subtitle">Choose your preferred wallet to continue on Polygon</p>
-
+        <button style="position:absolute;right:15px;top:15px;background:none;border:none;color:#666;cursor:pointer" onclick="closeWalletModal()">✕</button>
+        <h4 style="color:#DAA520;text-align:center;margin-bottom:20px">Connect Wallet</h4>
         <div class="wallet-option" onclick="connectBrowser()">
-            <div class="wallet-icon" style="background:#f6851b22">🦊</div>
-            <div class="wallet-info">
-                <strong>Browser Wallet</strong>
-                <small>MetaMask · Rabby · Brave · Coinbase Extension</small>
-            </div>
+            <span>🦊</span>
+            <div><strong>Browser Wallet</strong><br><small>MetaMask, Rabby, etc.</small></div>
         </div>
-
-        <div class="wallet-divider">— or scan QR code —</div>
-
         <div class="wallet-option" onclick="connectWC()">
-            <div class="wallet-icon" style="background:#3b99fc22">
-                <svg width="26" height="26" viewBox="0 0 24 24" fill="#3b99fc"><path d="M4.91 7.52a10.18 10.18 0 0 1 14.18 0l.47.46a.48.48 0 0 1 0 .69l-1.61 1.57a.25.25 0 0 1-.35 0l-.65-.63a7.1 7.1 0 0 0-9.88 0l-.7.68a.25.25 0 0 1-.35 0L4.41 8.72a.48.48 0 0 1 0-.69l.5-.51zm17.52 3.27 1.43 1.4a.48.48 0 0 1 0 .69l-6.47 6.33a.5.5 0 0 1-.7 0L12.5 15.1a.13.13 0 0 0-.18 0l-4.19 4.1a.5.5 0 0 1-.7 0L.96 12.87a.48.48 0 0 1 0-.69l1.44-1.4a.5.5 0 0 1 .7 0l4.19 4.1c.05.05.13.05.18 0l4.18-4.1a.5.5 0 0 1 .7 0l4.2 4.1c.04.05.12.05.17 0l4.2-4.1a.5.5 0 0 1 .7 0z"/></svg>
-            </div>
-            <div class="wallet-info">
-                <strong>WalletConnect</strong>
-                <small>Trust Wallet · Rainbow · MetaMask Mobile · +300 more</small>
-            </div>
+            <span>🔗</span>
+            <div><strong>WalletConnect</strong><br><small>Trust, Rainbow, Mobile</small></div>
         </div>
-
-        <div class="modal-status" id="modal-status"></div>
+        <div id="modal-status" style="font-size:12px;text-align:center;margin-top:10px"></div>
     </div>
 </div>
 
-<!-- ══════════ HERO ══════════ -->
 <section class="hero">
     <img src="https://i.ibb.co/bjXfjfRF/background-removal-TUFIRm-Jn-Zy1-QME0j-MSM2-Y2-Fm-Mjhh-NTNh-Mz-Ri-Yz-Bi-NTFl-MTQ3-ZGQx-Nm-Ey-ZTRm-MCMx-N.png" class="lux-official-logo" alt="LUX Logo">
     <h1>LUX PROTOCOL</h1>
     <p class="developer-tag">Designed by ARCHITECT</p>
-    <p class="tagline">The Scientific Super-Computer on Blockchain</p>
 
     <div class="mission-box">
-        <h2>Our Vision</h2>
-        <p>LUX Protocol aims to build a decentralized network providing high-performance computing power for scientific research and AI model development. LUX tokens serve as the digital fuel for resource exchange, enabling researchers worldwide to access limitless computational power with transparency and security.</p>
+        <h2>Presale Vision</h2>
+        <p>You are participating in the early seeding of LUX Protocol. All POL contributed here is dedicated to building the initial DEX liquidity pool, which will be locked upon launch. Early supporters receive a fixed rate of 10,000 LUX per 1 POL.</p>
     </div>
 
     <div class="buy-box">
-        <h3 id="status-title">Live Trading Active</h3>
-
-        <div class="price-row" style="margin-top:12px">
-            <span class="price-label">LUX / USD</span>
-            <span class="live-badge"><span class="live-dot"></span> Live</span>
-        </div>
-        <div class="price-display" id="live-price">Loading…</div>
-        <div class="price-change" id="price-change">&nbsp;</div>
+        <h3>Presale Allocation Active</h3>
+        <div class="price-display" style="color:#DAA520;margin-top:10px">1 POL = 10,000 LUX</div>
 
         <div class="mini-stats">
-            <div class="mini-stat"><span class="mini-stat-val" id="stat-vol">—</span><span class="mini-stat-lbl">24h Volume</span></div>
-            <div class="mini-stat"><span class="mini-stat-val" id="stat-liq">—</span><span class="mini-stat-lbl">Liquidity</span></div>
-            <div class="mini-stat"><span class="mini-stat-val" id="stat-mcap">—</span><span class="mini-stat-lbl">Mkt Cap</span></div>
-            <div class="mini-stat"><span class="mini-stat-val" id="stat-txns">—</span><span class="mini-stat-lbl">24h Txns</span></div>
+            <div class="mini-stat"><span class="mini-stat-val">Polygon</span><span class="mini-stat-lbl">Network</span></div>
+            <div class="mini-stat"><span class="mini-stat-val">Fixed</span><span class="mini-stat-lbl">Price Type</span></div>
+            <div class="mini-stat"><span class="mini-stat-val">Reserved</span><span class="mini-stat-lbl">Status</span></div>
         </div>
 
-        <div class="progress-container" style="margin-top:20px">
-            <div class="progress-bar" id="lux-progress"></div>
+        <div class="progress-container">
+            <div class="progress-bar" style="width: 15%;"></div>
         </div>
-        <p style="font-size:.75rem;text-align:right;color:#DAA520"><span id="sold-amount">5,000,000</span> / 100,000,000 LUX Circulating</p>
 
-        <a href="https://www.sushi.com/swap?chainId=137&tokens=NATIVE&tokens=0x1C9689E5493E2FfF3A62b72AE5abC59F233890fd" target="_blank" class="btn btn-buy">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg>
-            Buy LUX on SushiSwap
-        </a>
-
-        <!-- Calculator -->
         <div class="calc-section">
-            <div class="calc-header">
-                <span class="calc-title">
-                    <svg style="width:13px;height:13px;vertical-align:-2px;margin-right:4px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-                    Send Directly &amp; Reserve LUX
-                </span>
-                <button id="connect-btn" class="wallet-btn" onclick="openWalletModal()">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px"><path d="M20 12V22H4V12"/><path d="M22 7H2v5h20V7z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
-                    Connect Wallet
-                </button>
-            </div>
-            <div class="wallet-addr" id="wallet-addr"></div>
+            <button id="connect-btn" class="btn" style="width:100%;background:rgba(218,165,32,0.1);border:1px solid #DAA520;color:#DAA520;margin-bottom:15px" onclick="openWalletModal()">Connect Wallet</button>
+            <div id="wallet-addr" style="font-family:monospace;font-size:10px;margin-bottom:10px;display:none;color:#4cff82"></div>
 
             <div class="calc-input-row">
-                <input type="number" id="amount" class="calc-input" placeholder="0.00" min="0" step="0.01">
+                <input type="number" id="amount" class="calc-input" placeholder="Amount of POL">
                 <span class="calc-unit">POL</span>
             </div>
-            <div class="calc-preview" id="calc-preview"></div>
+            <div id="calc-preview" style="font-size:14px;color:#DAA520;margin-bottom:15px;min-height:20px"></div>
 
-            <button id="send-btn" class="btn-send" onclick="sendTx()" disabled>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-                Send POL → Reserve LUX
-            </button>
-            <p class="rate-note">Rate: 1 POL = 10,000 LUX &nbsp;·&nbsp; Polygon Network</p>
-            <div class="tx-status" id="tx-status"></div>
+            <button id="send-btn" class="btn-send" onclick="sendTx()" disabled>Reserve LUX Now</button>
+            <div class="tx-status" id="tx-status" style="margin-top:10px;font-size:12px"></div>
         </div>
 
-        <!-- Social links -->
         <div class="btn-group">
-            <a href="https://x.com/luxprotocoll" target="_blank" class="btn btn-outline">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                Twitter
-            </a>
-            <a href="https://t.me/luxprotocol" target="_blank" class="btn btn-outline">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.96 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-                Telegram
-            </a>
-            <a href="https://github.com/ARCHITECT1992/LUX-Protocol" target="_blank" class="btn btn-outline">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
-                GitHub
-            </a>
-            <a href="https://dexscreener.com/polygon/0x6fb3f099b66036fec2ebe62e9ca8662104b3988d" target="_blank" class="btn btn-outline">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-                DexScreener
-            </a>
-            <a href="https://polygonscan.com/token/0x1C9689E5493E2FfF3A62b72AE5abC59F233890fd" target="_blank" class="btn btn-outline">
-                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
-                Contract
-            </a>
-            <a href="https://www.luxprotocol.online/whitpaper.pdf" target="_blank" class="btn btn-outline">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-                About
-            </a>
+            <a href="https://t.me/luxprotocol" target="_blank" class="btn btn-outline">Telegram</a>
+            <a href="https://x.com/luxprotocoll" target="_blank" class="btn btn-outline">Twitter</a>
         </div>
-
-        <div class="contract-info">
-            Official Polygon Address:<br>
-            <button class="copy-addr" onclick="copyAddress()">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-                0x1C9689E5493E2FfF3A62b72AE5abC59F233890fd
-            </button>
-            <div class="copy-toast" id="copy-toast">✓ Copied to clipboard!</div>
-        </div>
-    </div>
-
-    <div class="stats-grid">
-        <div class="stat-item"><span class="stat-label">Total Supply</span><span class="stat-value">100M</span></div>
-        <div class="stat-item"><span class="stat-label">Network Status</span><span class="stat-value">Mainnet Active</span></div>
-        <div class="stat-item"><span class="stat-label">Data Capacity</span><span class="stat-value">Peta-Scale</span></div>
-        <div class="stat-item"><span class="stat-label">Live Price (USD)</span><span class="stat-value" id="stat-price-grid">—</span></div>
     </div>
 </section>
 
 <footer>
-    <p>&copy; 2026 LUX Protocol. All rights reserved.</p>
-    <p>Architect &amp; Lead Dev: <strong>ARCHITECT</strong></p>
-    <p>Support: <a href="mailto:info@luxprotocol.online">info@luxprotocol.online</a></p>
+    <p>&copy; 2026 LUX Protocol | Developed by ARCHITECT</p>
 </footer>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js" type="application/javascript"></script>
+
 <script>
-// ══════════════════════════════════════
-// CONSTANTS  —  غيّر DESTINATION_ADDR الى محفظتك
-// ══════════════════════════════════════
-const CONTRACT_ADDR    = '0x1C9689E5493E2FfF3A62b72AE5abC59F233890fd';
-const DESTINATION_ADDR = '0x1C9689E5493E2FfF3A62b72AE5abC59F233890fd';
-const PRICE_PER_POL    = 10000;
-const POLYGON_CHAIN_ID = '0x89';
-const POLYGON_INT      = 137;
-// احصل على Project ID مجاني من https://cloud.reown.com
-const WC_PROJECT_ID    = 'd8e54888cd30f0326562f6f9084899ac';
+const DESTINATION_ADDR = '0x0CB7c3B321724086542f7200261335FC487465D2';
+const PRICE_PER_POL = 10000;
+const WC_PROJECT_ID = 'd8e54888cd30f0326562f6f9084899ac';
 
-let provider  = null;
-let signer    = null;
-let wcProv    = null;
+let provider, signer, wcProv;
 
-// ── Star field ──
-(function(){
-    const sf = document.getElementById('starfield');
-    for(let i=0;i<80;i++){
-        const s=document.createElement('div'); s.className='star';
-        const sz=Math.random()*2.5+.5;
-        s.style.cssText=`width:${sz}px;height:${sz}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--dur:${(Math.random()*4+2).toFixed(1)}s;--delay:${(Math.random()*6).toFixed(1)}s;--op:${(Math.random()*.5+.1).toFixed(2)}`;
-        sf.appendChild(s);
-    }
-})();
-
-// ── Progress bar ──
-function animateValue(id,start,end,dur){
-    const o=document.getElementById(id),range=end-start; let t0=null;
-    function step(ts){if(!t0)t0=ts; const p=Math.min((ts-t0)/dur,1); o.innerHTML=Math.floor(p*range+start).toLocaleString(); if(p<1)requestAnimationFrame(step);}
-    requestAnimationFrame(step);
-}
-function updateProgress(sold){
-    setTimeout(()=>{document.getElementById('lux-progress').style.width=(sold/100000000*100)+'%';},100);
-    animateValue('sold-amount',5000000,sold,2500);
-}
-
-// ── Format helpers ──
-const fmtUSD  =n=>(!n||isNaN(n))?'—':n>=1e6?'$'+(n/1e6).toFixed(2)+'M':n>=1e3?'$'+(n/1e3).toFixed(2)+'K':'$'+n.toFixed(4);
-const fmtPrice=n=>(!n||isNaN(n))?'—':'$'+(n<0.001?n.toExponential(4):n.toFixed(8));
-const fmtPct  =n=>(n==null||isNaN(n))?'':(n>=0?'+':'')+n.toFixed(2)+'%';
-
-// ── Live price ──
-let lastPrice=null;
-async function fetchLiveData(){
-    try{
-        const r=await fetch('https://api.dexscreener.com/latest/dex/pairs/polygon/0x6fb3f099b66036fec2ebe62e9ca8662104b3988d');
-        const d=await r.json(); const pair=d?.pair||d?.pairs?.[0]; if(!pair)return;
-        const price=parseFloat(pair.priceUsd),pct24=pair.priceChange?.h24??null,vol24=pair.volume?.h24??null,liq=pair.liquidity?.usd??null,mcap=pair.fdv??null,txns=(pair.txns?.h24?.buys??0)+(pair.txns?.h24?.sells??0);
-        const pe=document.getElementById('live-price'); pe.textContent=fmtPrice(price);
-        if(lastPrice!==null){pe.style.color=price>lastPrice?'#4cff82':price<lastPrice?'#ff4c6e':'#FFFACD'; setTimeout(()=>{pe.style.color='#FFFACD';},1200);} lastPrice=price;
-        const ce=document.getElementById('price-change'); if(pct24!==null){ce.textContent=fmtPct(pct24)+' (24h)'; ce.className='price-change '+(pct24>=0?'pos':'neg');}
-        document.getElementById('stat-vol').textContent=fmtUSD(vol24);
-        document.getElementById('stat-liq').textContent=fmtUSD(liq);
-        document.getElementById('stat-mcap').textContent=fmtUSD(mcap);
-        document.getElementById('stat-txns').textContent=txns.toLocaleString();
-        document.getElementById('stat-price-grid').textContent=fmtPrice(price);
-        document.getElementById('ticker-text').textContent=`✦ LUX / USD ${fmtPrice(price)}  ${pct24!==null?fmtPct(pct24)+' 24h':''}  |  Vol: ${fmtUSD(vol24)}  |  Liq: ${fmtUSD(liq)}  |  Mkt Cap: ${fmtUSD(mcap)}  |  Contract: ${CONTRACT_ADDR}  |  Polygon Mainnet  ✦`;
-    }catch(e){document.getElementById('live-price').textContent='Data unavailable';}
-}
-
-// ── Copy address ──
-function copyAddress(){
-    navigator.clipboard.writeText(CONTRACT_ADDR).then(()=>{
-        const t=document.getElementById('copy-toast'); t.style.display='block'; setTimeout(()=>{t.style.display='none';},2000);
-    });
-}
-
-// ── Calculator ──
-document.getElementById('amount').oninput=function(){
-    const val=parseFloat(this.value), prev=document.getElementById('calc-preview');
-    if(val>0) prev.innerHTML=`You will receive: <span class="lux-amount">${(val*PRICE_PER_POL).toLocaleString()} $LUX</span> reserved.`;
-    else prev.innerHTML='';
+// Calculator
+document.getElementById('amount').oninput = function() {
+    const val = parseFloat(this.value);
+    const prev = document.getElementById('calc-preview');
+    if(val > 0) prev.innerText = `You will receive: ${(val * PRICE_PER_POL).toLocaleString()} LUX`;
+    else prev.innerText = '';
 };
 
-// ══════════════════════════════════════
-// WALLET MODAL
-// ══════════════════════════════════════
-function openWalletModal(){document.getElementById('wallet-overlay').classList.add('open');}
-function closeWalletModal(){document.getElementById('wallet-overlay').classList.remove('open'); document.getElementById('modal-status').textContent='';}
-document.getElementById('wallet-overlay').addEventListener('click',function(e){if(e.target===this)closeWalletModal();});
+// Modal Logic
+function openWalletModal(){ document.getElementById('wallet-overlay').classList.add('open'); }
+function closeWalletModal(){ document.getElementById('wallet-overlay').classList.remove('open'); }
 
-function setModalStatus(msg,color){const el=document.getElementById('modal-status'); el.textContent=msg; el.style.color=color||'#888';}
-
-function setConnected(address){
-    const short=address.slice(0,6)+'…'+address.slice(-4);
-    const btn=document.getElementById('connect-btn');
-    btn.innerHTML=`<svg viewBox="0 0 8 8" style="width:8px;height:8px"><circle cx="4" cy="4" r="4" fill="#4cff82"/></svg> ${short}`;
-    btn.classList.add('connected'); btn.onclick=disconnectWallet;
-    const ae=document.getElementById('wallet-addr'); ae.textContent='📍 '+address; ae.style.display='block';
-    document.getElementById('send-btn').disabled=false;
-    document.getElementById('tx-status').textContent='';
+function setConnected(address) {
+    document.getElementById('connect-btn').innerText = "Connected: " + address.slice(0,6) + "...";
+    document.getElementById('wallet-addr').innerText = address;
+    document.getElementById('wallet-addr').style.display = "block";
+    document.getElementById('send-btn').disabled = false;
     closeWalletModal();
 }
 
-function disconnectWallet(){
-    provider=null; signer=null;
-    if(wcProv){try{wcProv.disconnect();}catch(e){} wcProv=null;}
-    const btn=document.getElementById('connect-btn');
-    btn.innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px"><path d="M20 12V22H4V12"/><path d="M22 7H2v5h20V7z"/></svg> Connect Wallet`;
-    btn.classList.remove('connected'); btn.onclick=openWalletModal;
-    document.getElementById('wallet-addr').style.display='none';
-    document.getElementById('send-btn').disabled=true;
-}
-
-async function switchToPolygon(prov){
-    try{await prov.request({method:'wallet_switchEthereumChain',params:[{chainId:POLYGON_CHAIN_ID}]});}
-    catch(e){if(e.code===4902)await prov.request({method:'wallet_addEthereumChain',params:[{chainId:POLYGON_CHAIN_ID,chainName:'Polygon Mainnet',nativeCurrency:{name:'POL',symbol:'POL',decimals:18},rpcUrls:['https://polygon-rpc.com/'],blockExplorerUrls:['https://polygonscan.com/']}]});}
-}
-
-// ── Browser Wallet (MetaMask, Rabby, Brave…) ──
-async function connectBrowser(){
-    if(!window.ethereum){setModalStatus('⚠ No browser wallet detected. Install MetaMask.','#ff4c6e'); return;}
-    try{
-        setModalStatus('Connecting…');
-        await window.ethereum.request({method:'eth_requestAccounts'});
-        await switchToPolygon(window.ethereum);
-        provider=new ethers.providers.Web3Provider(window.ethereum);
-        signer=provider.getSigner();
+async function connectBrowser() {
+    if(window.ethereum) {
+        provider = new ethers.providers.Web3Provider(window.ethereum);
+        await provider.send("eth_requestAccounts", []);
+        signer = provider.getSigner();
         setConnected(await signer.getAddress());
-        window.ethereum.on('accountsChanged',accs=>{if(!accs.length)disconnectWallet(); else setConnected(accs[0]);});
-        window.ethereum.on('chainChanged',()=>window.location.reload());
-    }catch(e){setModalStatus('⚠ '+(e?.message||'Cancelled.'),'#ff4c6e');}
+    } else {
+        alert("Please install MetaMask!");
+    }
 }
 
-// ── WalletConnect (Trust, Rainbow, MetaMask Mobile…) ──
-async function connectWC(){
-    if(WC_PROJECT_ID==='YOUR_PROJECT_ID_HERE'){
-        setModalStatus('⚠ Add your WalletConnect Project ID. Get one free at cloud.reown.com','#DAA520'); return;
-    }
-    try{
-        setModalStatus('Opening QR Code…');
-        const EthProv=window.WalletConnectEthereumProvider?.EthereumProvider || window.WalletConnectEthereumProvider;
-        if(!EthProv){setModalStatus('⚠ WalletConnect not loaded.','#ff4c6e'); return;}
-        wcProv=await EthProv.init({
-            projectId:WC_PROJECT_ID,
-            chains:[POLYGON_INT],
-            showQrModal:true,
-            metadata:{name:'LUX Protocol',description:'Scientific Super-Computer on Blockchain',url:'https://luxprotocol.online',icons:[]}
+async function connectWC() {
+    try {
+        const EthProv = window.WalletConnectEthereumProvider.EthereumProvider;
+        wcProv = await EthProv.init({
+            projectId: WC_PROJECT_ID,
+            chains: [137],
+            showQrModal: true
         });
         await wcProv.connect();
-        provider=new ethers.providers.Web3Provider(wcProv);
-        signer=provider.getSigner();
+        provider = new ethers.providers.Web3Provider(wcProv);
+        signer = provider.getSigner();
         setConnected(await signer.getAddress());
-        wcProv.on('disconnect',disconnectWallet);
-    }catch(e){setModalStatus('⚠ '+(e?.message||'Cancelled.'),'#ff4c6e');}
+    } catch(e) { console.error(e); }
 }
 
-// ══════════════════════════════════════
-// SEND TRANSACTION
-// ══════════════════════════════════════
-async function sendTx(){
-    const amount=document.getElementById('amount').value;
-    const status=document.getElementById('tx-status');
-    const sendBtn=document.getElementById('send-btn');
-    if(!signer){status.textContent='⚠ Connect your wallet first.'; status.className='tx-status error'; return;}
-    if(!amount||parseFloat(amount)<=0){status.textContent='⚠ Enter a valid POL amount.'; status.className='tx-status error'; return;}
-    try{
-        sendBtn.disabled=true; status.className='tx-status'; status.textContent='⏳ Confirm in your wallet…';
-        const tx=await signer.sendTransaction({to:DESTINATION_ADDR, value:ethers.utils.parseEther(String(amount))});
-        status.textContent='⏳ Broadcasting…';
-        await tx.wait(1);
-        const lux=(parseFloat(amount)*PRICE_PER_POL).toLocaleString();
-        status.className='tx-status success';
-        status.innerHTML=`✅ Success! <strong>${lux} $LUX</strong> reserved.<br><a href="https://polygonscan.com/tx/${tx.hash}" target="_blank">🔗 View on PolygonScan</a>`;
-    }catch(e){
-        status.className='tx-status error';
-        status.textContent='✗ '+(e?.reason||e?.message||'Transaction failed.');
-    }finally{sendBtn.disabled=false;}
+async function sendTx() {
+    const amount = document.getElementById('amount').value;
+    const status = document.getElementById('tx-status');
+    if(!amount || amount <= 0) return;
+    try {
+        status.innerText = "⏳ Confirming...";
+        const tx = await signer.sendTransaction({
+            to: DESTINATION_ADDR,
+            value: ethers.utils.parseEther(amount)
+        });
+        status.innerHTML = `✅ Sent! <a href="https://polygonscan.com/tx/${tx.hash}" target="_blank">View on Scan</a>`;
+    } catch(e) { status.innerText = "❌ Failed."; }
 }
-
-// ── Init ──
-window.onload=function(){
-    updateProgress(5038155);
-    fetchLiveData();
-    setInterval(fetchLiveData,30000);
-};
 </script>
 </body>
 </html>
